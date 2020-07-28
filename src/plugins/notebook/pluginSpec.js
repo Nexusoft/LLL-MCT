@@ -20,7 +20,7 @@
  * at runtime from the About dialog for additional information.
  *****************************************************************************/
 
-import { createOpenMct, createMouseEvent } from 'testTools';
+import { createOpenMct, createMouseEvent } from 'utils/testing';
 import NotebookPlugin from './plugin';
 import Vue from 'vue';
 
@@ -146,12 +146,8 @@ describe("Notebook plugin:", () => {
         }
 
         beforeAll(() => {
-            const indicator = openmct.indicators.indicatorObjects.filter(obj => {
-                const indicatorClasses = obj.element.classList;
-                return indicatorClasses.contains('icon-notebook');
-            });
-
-            snapshotIndicator = indicator[0].element;
+            snapshotIndicator = openmct.indicators.indicatorObjects
+                .find(indicator => indicator.key === 'notebook-snapshot-indicator').element;
 
             element.append(snapshotIndicator);
 

@@ -21,8 +21,16 @@
  *****************************************************************************/
 
 import * as NotebookStorage from './notebook-storage';
+import { createOpenMct } from 'utils/testing';
 
 const notebookStorage = {
+    domainObject: {
+        name: 'notebook',
+        identifier: {
+            namespace: '',
+            key: 'test-notebook'
+        }
+    },
     notebookMeta : {
         name: 'notebook',
         identifier: {
@@ -47,7 +55,14 @@ const notebookStorage = {
     }
 };
 
+let openmct = createOpenMct();
+
 describe('Notebook Storage:', () => {
+    beforeAll(done => {
+        openmct = createOpenMct();
+        done();
+    });
+
     beforeEach(() => {
         window.localStorage.setItem('notebook-storage', null);
     });
@@ -65,7 +80,7 @@ describe('Notebook Storage:', () => {
     });
 
     it('has correct notebookstorage on setDefaultNotebook', () => {
-        NotebookStorage.setDefaultNotebook(notebookStorage);
+        NotebookStorage.setDefaultNotebook(openmct, notebookStorage);
         const defaultNotebook = NotebookStorage.getDefaultNotebook();
 
         expect(JSON.stringify(defaultNotebook)).toBe(JSON.stringify(notebookStorage));
@@ -81,7 +96,7 @@ describe('Notebook Storage:', () => {
             sectionTitle: 'Section'
         };
 
-        NotebookStorage.setDefaultNotebook(notebookStorage);
+        NotebookStorage.setDefaultNotebook(openmct, notebookStorage);
         NotebookStorage.setDefaultNotebookSection(section);
 
         const defaultNotebook = NotebookStorage.getDefaultNotebook();
@@ -98,7 +113,7 @@ describe('Notebook Storage:', () => {
             pageTitle: 'Page'
         };
 
-        NotebookStorage.setDefaultNotebook(notebookStorage);
+        NotebookStorage.setDefaultNotebook(openmct, notebookStorage);
         NotebookStorage.setDefaultNotebookPage(page);
 
         const defaultNotebook = NotebookStorage.getDefaultNotebook();
